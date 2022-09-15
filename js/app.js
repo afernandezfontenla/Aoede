@@ -26,6 +26,8 @@ var recognition = new SpeechRecognition();
 
 var diagnostic = document.querySelector('.output');
 
+var counter = 1;
+
 document.getElementById("inputobj2").onclick = function () {
 
     phrases = document.getElementById("inputobj1").value.split(',');
@@ -51,6 +53,17 @@ document.getElementById("inputobj2").onclick = function () {
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
+    for (var i = 0; i < phrases.length;) {
+        phrases.slice([0][i]);
+        if(phrases.length==1){
+            document.getElementById("words").innerHTML = "Has introducido la palabra: "+phrases;
+        }else{
+            document.getElementById("words").innerHTML = "Has introducido las palabras: "+phrases;
+        }
+        
+        i++;
+    }
+
     if (button == 0) {
         recognition.start();
         button = 1;
@@ -72,6 +85,24 @@ document.getElementById("inputobj2").onclick = function () {
             if (speechResult === phrases[i].toLocaleLowerCase()) {
                 console.log('I heard the correct phrase!');
                 document.body.style.background = 'lime';
+
+                if (phrases.length == 1) {
+                    if (counter == 1) {
+                        document.getElementById("counter").innerHTML = "Has dicho la palabra: " + counter + " vez";
+                    }
+                    else if (counter > 1) {
+                        document.getElementById("counter").innerHTML = "Has dicho la palabra: " + counter + " veces";
+                    }
+                } else if (phrases.length > 1) {
+                    if (counter == 1) {
+                        document.getElementById("counter").innerHTML = "Has dicho las palabras: " + counter + " vez";
+                    }
+                    else if (counter > 1) {
+                        document.getElementById("counter").innerHTML = "Has dicho las palabras: " + counter + " veces";
+                    }
+                }
+                counter++;
+
                 break;
             } else {
                 document.body.style.background = 'red';
@@ -127,7 +158,5 @@ document.getElementById("inputobj2").onclick = function () {
         console.log('SpeechRecognition.onend');
         recognition.start();
     }
-    
-
     
 }
